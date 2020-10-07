@@ -2,8 +2,10 @@ package me.lab.in.action.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ComponentScan({"me.lab.in.action.web.query"})
 public class WebApplication {
 
 	public static void main(String[] args) {

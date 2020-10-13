@@ -2,16 +2,20 @@ package me.lab.in.action.web.query;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 @Component
+@Cacheable(value = "apiCache", keyGenerator = "simpleKeyGenerator")
 public class Query implements GraphQLQueryResolver {
 
     public String firstQuery(){
+        System.out.println("first");
         return "First Query.";
     }
 
     public String secondQuery(){
+        System.out.println("second");
         return "Second Query";
     }
 

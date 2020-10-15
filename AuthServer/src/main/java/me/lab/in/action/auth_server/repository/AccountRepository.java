@@ -10,12 +10,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Created by samchu on 2017/2/9.
+ */
 @Repository
 public interface AccountRepository extends JpaRepository<Account, String> {
 
     @Query("SELECT a FROM Account a WHERE a.username = :username")
     Account findByUsername(@Param("username") String username);
 
-    @Query("SELECT r FROM Account a, AccountRole ar, Role r WHERE a.username = :username and a.accountid = ar.accountid and ar.roleid = r.roleid")
+    @Query("SELECT r FROM Account a, AccountRole ar, Role r WHERE a.username = :username and a.accountId = ar.accountId and ar.roleId = r.roleId")
     List<Role> findRoleListByUsername(@Param("username") String username);
 }

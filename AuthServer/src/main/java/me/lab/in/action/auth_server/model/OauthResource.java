@@ -13,25 +13,28 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "scop")
+@Table(name = "oauth_resource", schema = "web")
 @EntityListeners(AuditingEntityListener.class) //加這行 CreatedBy 才會生效
-public class Scop {
+public class OauthResource {
     @Id
-    private String scopid;
-    private String resourceid;
-    private String scopcode;
+    @Column(name = "resource_id")
+    private String resourceId;
+    
     private String label;
-
+    
     @CreatedDate
-    @Column(name = "createddate")
-    private Date createddate;
+    @Column(name = "created_date")
+    private Date createdDate;
+    
     @CreatedBy
-    @Column(name = "createdby")
-    private String createdby;
+    @Column(name = "created_by")
+    private String createdBy;
+    
     @LastModifiedDate
-    @Column(name = "lastmodifieddate")
-    private Date lastmodifieddate;
+    @Column(name = "last_modified_date")
+    private Date lastModifiedDate;
+    
     @LastModifiedBy
-    @Column(name = "lastmodifiedby")
-    private String lastmodifiedby;
+    @Column(name = "last_modified_by")
+    private String lastModifiedBy;
 }

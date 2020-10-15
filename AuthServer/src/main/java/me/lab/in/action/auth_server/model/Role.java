@@ -14,27 +14,36 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-
+/**
+ * Created by samchu on 2017/2/9.
+ */
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class) //加這行 CreatedBy 才會生效
 public class Role {
     @Id
-    private String roleid;
+    @Column(name = "role_id")
+    private String roleId;
+
     @NotNull
     private String code;
+
     @NotNull
     private String label;
+
     @CreatedDate
-    @Column(name = "createddate")
-    private Date createddate;
+    @Column(name = "created_date")
+    private Date createdDate;
+
     @CreatedBy
-    @Column(name = "createdby")
-    private String createdby;
+    @Column(name = "created_by")
+    private String createdBy;
+
     @LastModifiedDate
-    @Column(name = "lastmodifieddate")
-    private Date lastmodifieddate;
+    @Column(name = "last_modified_date")
+    private Date lastModifiedDate;
+
     @LastModifiedBy
-    @Column(name = "lastmodifiedby")
-    private String lastmodifiedby;
+    @Column(name = "last_modified_by")
+    private String lastModifiedBy;
 }

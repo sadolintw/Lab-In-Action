@@ -2,11 +2,11 @@ package me.lab.in.action.auth_server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+
 import me.lab.in.action.auth_server.model.OauthClient;
 import me.lab.in.action.auth_server.model.OauthClientGrantType;
-import me.lab.in.action.auth_server.model.Resource;
-import me.lab.in.action.auth_server.model.Scop;
-
+import me.lab.in.action.auth_server.model.OauthResource;
+import me.lab.in.action.auth_server.model.OauthScope;
 import me.lab.in.action.auth_server.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.*;
@@ -25,9 +25,9 @@ public class CustomJdbcClientDetailsService implements ClientDetailsService, Cli
     @Autowired
     private OauthClientResourceRepository oauthClientResourceRepository;
     @Autowired
-    private ResourceRepository resourceRepository;
+    private OauthResourceRepository resourceRepository;
     @Autowired
-    private ScopRepository scopRepository;
+    private OauthScopeRepository scopRepository;
     @Autowired
     private OauthClientGrantTypeRepository oauthClientGrantTypeRepository;
 
@@ -36,18 +36,18 @@ public class CustomJdbcClientDetailsService implements ClientDetailsService, Cli
         log.debug(">> CustomJdbcClientDetailsService.loadClientByClientId clientId={}", clientId);
         OauthClient oauthClient = oauthClientRepository.findById(clientId).get();
         // 取出 Resource
-        List<String> resourceidList = oauthClientResourceRepository.findResourceidByClientid(oauthClient.getClientid());
+        List<String> resourceidList = oauthClientResourceRepository.findResourceIdByClientId(oauthClient.getClientId());
         // 雖然有對應，但避免對應錯還是去 Resource 表格取出來
-        List<Resource> resourceList = resourceRepository.findByResourceidIn(resourceidList);
-        List<String> resourceids = resourceList.stream().map(Resource::getResourceid).collect(Collectors.toList());
-        // 取出 Scop
-        List<Scop> scopList = scopRepository.findByResourceidIn(resourceids);
-        List<String> scops = scopList.stream().map(Scop::getScopcode).collect(Collectors.toList());
+        List<OauthResource> resourceList = resourceRepository.findByResourceIdIn(resourceidList);
+        List<String> resourceids = resourceList.stream().map(OauthResource::getResourceId).collect(Collectors.toList());
+        // 取出 Scope
+        List<OauthScope> scopList = scopRepository.findByResourceIdIn(resourceids);
+        List<String> scops = scopList.stream().map(OauthScope::getScopeCode).collect(Collectors.toList());
         // 取出授權類型
-        List<OauthClientGrantType> oauthClientGrantTypeList = oauthClientGrantTypeRepository.findByClientid(oauthClient.getClientid());
-        List<String> grantTypes = oauthClientGrantTypeList.stream().map(OauthClientGrantType::getGranttype).collect(Collectors.toList());
+        List<OauthClientGrantType> oauthClientGrantTypeList = oauthClientGrantTypeRepository.findByClientId(oauthClient.getClientId());
+        List<String> grantTypes = oauthClientGrantTypeList.stream().map(OauthClientGrantType::getGrantType).collect(Collectors.toList());
         BaseClientDetails details = new BaseClientDetails();
-        details.setClientId(oauthClient.getClientid());
+        details.setClientId(oauthClient.getClientId());
         details.setClientSecret(oauthClient.getClientSecret());
         details.setResourceIds(resourceids);
         details.setScope(scops);

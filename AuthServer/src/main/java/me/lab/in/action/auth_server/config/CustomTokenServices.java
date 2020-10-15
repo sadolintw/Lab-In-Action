@@ -3,7 +3,8 @@ package me.lab.in.action.auth_server.config;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
-import me.lab.in.action.auth_server.service.ScopService;
+import me.lab.in.action.auth_server.service.ScopeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -18,6 +19,7 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
+@Service
 @Slf4j
 public class CustomTokenServices extends DefaultTokenServices {
     private int refreshTokenValiditySeconds = 60 * 60 * 24 * 30; // default 30 days.
@@ -34,13 +37,19 @@ public class CustomTokenServices extends DefaultTokenServices {
     private int accessTokenValiditySeconds = 60 * 60 * 12; // default 12 hours.
 
     private ClientDetailsService clientDetailsService;
+
     private AuthenticationManager authenticationManager;
+
+    @Autowired
     private TokenStore tokenStore;
+
     private TokenEnhancer accessTokenEnhancer;
+
     private boolean supportRefreshToken = false;
+
     private boolean reuseRefreshToken = true;
 
-    private ScopService scopService;
+    private ScopeService scopService;
 
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(tokenStore, "tokenStore must be set");

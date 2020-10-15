@@ -1,8 +1,8 @@
 package me.lab.in.action.auth_server.config;
 
 import lombok.extern.slf4j.Slf4j;
-import me.lab.in.action.auth_server.model.Oauthtoken;
-import me.lab.in.action.auth_server.repository.OauthtokenRepository;
+import me.lab.in.action.auth_server.model.OauthToken;
+import me.lab.in.action.auth_server.repository.OauthTokenRepository;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +12,17 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.Collection;
 import java.util.Collections;
 
 @Slf4j
+@Component
 public class CustomTokenStore implements TokenStore {
     @Autowired
-    private OauthtokenRepository oauthtokenRepository;
+    private OauthTokenRepository oauthtokenRepository;
 
     @Override
     public OAuth2Authentication readAuthentication(OAuth2AccessToken token) {
@@ -43,19 +45,19 @@ public class CustomTokenStore implements TokenStore {
     @Override
     public void storeAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
         log.debug(">> CustomTokenStore.storeAccessToken token={}, authentication={}", token, authentication);
-        Oauthtoken oauthtoken = new Oauthtoken();
+        OauthToken oauthtoken = new OauthToken();
         String serid = RandomStringUtils.randomAlphanumeric(32);
-        oauthtoken.setSerid(serid);
-        oauthtoken.setTokenid(DigestUtils.md5Hex(token.getValue()));
-        oauthtoken.setRefreshid(token.getRefreshToken() == null ? null : DigestUtils.md5Hex(token.getRefreshToken().getValue()));
-        oauthtoken.setClientid(authentication.getOAuth2Request().getClientId());
-        oauthtoken.setGranttype(authentication.getOAuth2Request().getGrantType());
-        oauthtoken.setResourceids(authentication.getOAuth2Request().getResourceIds().toString());
+        oauthtoken.setId(serid);
+        oauthtoken.setTokenId(DigestUtils.md5Hex(token.getValue()));
+        oauthtoken.setRefreshId(token.getRefreshToken() == null ? null : DigestUtils.md5Hex(token.getRefreshToken().getValue()));
+        oauthtoken.setClientId(authentication.getOAuth2Request().getClientId());
+        oauthtoken.setGrantType(authentication.getOAuth2Request().getGrantType());
+        oauthtoken.setResourceIds(authentication.getOAuth2Request().getResourceIds().toString());
         oauthtoken.setScopes(authentication.getOAuth2Request().getScope().toString());
         oauthtoken.setUsername(authentication.isClientOnly() ? null : authentication.getName());
-        oauthtoken.setRedirecturi(authentication.getOAuth2Request().getRedirectUri());
-        oauthtoken.setAccesstoken(token.getValue());
-        oauthtoken.setRefreshtoken(token.getRefreshToken() == null ? null : token.getRefreshToken().getValue());
+        oauthtoken.setRedirectUri(authentication.getOAuth2Request().getRedirectUri());
+        oauthtoken.setAccessToken(token.getValue());
+        oauthtoken.setRefreshToken(token.getRefreshToken() == null ? null : token.getRefreshToken().getValue());
         oauthtoken.setRefreshed(Boolean.FALSE);
         oauthtoken.setLocked(Boolean.FALSE);
         try {
@@ -96,11 +98,11 @@ public class CustomTokenStore implements TokenStore {
     @Override
     public OAuth2RefreshToken readRefreshToken(String tokenValue) {
         log.debug(">> CustomTokenStore.readRefreshToken tokenValue={}", tokenValue);
-        Oauthtoken oauthtoken = oauthtokenRepository.findByRefreshid(DigestUtils.md5Hex(tokenValue));
+        OauthToken oauthtoken = oauthtokenRepository.findByRefreshId(DigestUtils.md5Hex(tokenValue));
         if (oauthtoken.getRefreshed() == Boolean.TRUE) {
             throw new BadCredentialsException("RefreshToken Is Refreshed.");
         }
-        OAuth2RefreshToken oAuth2RefreshToken = new DefaultOAuth2RefreshToken(oauthtoken.getRefreshtoken());
+        OAuth2RefreshToken oAuth2RefreshToken = new DefaultOAuth2RefreshToken(oauthtoken.getRefreshToken());
         log.debug("<< CustomTokenStore.readRefreshToken OAuth2RefreshToken={}", oAuth2RefreshToken);
         return oAuth2RefreshToken;
     }
@@ -115,7 +117,7 @@ public class CustomTokenStore implements TokenStore {
     public OAuth2Authentication readAuthenticationForRefreshToken(OAuth2RefreshToken token) {
         log.debug(">> CustomTokenStore.readAuthenticationForRefreshToken token={}", token);
         OAuth2Authentication oAuth2Authentication = null;
-        Oauthtoken oauthtoken = oauthtokenRepository.findByRefreshid(DigestUtils.md5Hex(token.getValue()));
+        OauthToken oauthtoken = oauthtokenRepository.findByRefreshId(DigestUtils.md5Hex(token.getValue()));
         try {
             ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(oauthtoken.getAuthentication()));
             oAuth2Authentication = (OAuth2Authentication) ois.readObject();
@@ -139,7 +141,7 @@ public class CustomTokenStore implements TokenStore {
     @Override
     public void removeAccessTokenUsingRefreshToken(OAuth2RefreshToken refreshToken) {
         log.debug(">> CustomTokenStore.removeAccessTokenUsingRefreshToken refreshToken={}", refreshToken);
-        Oauthtoken oauthtoken = oauthtokenRepository.findByRefreshid(DigestUtils.md5Hex(refreshToken.getValue()));
+        OauthToken oauthtoken = oauthtokenRepository.findByRefreshId(DigestUtils.md5Hex(refreshToken.getValue()));
         oauthtoken.setRefreshed(Boolean.TRUE);
         oauthtokenRepository.save(oauthtoken);
         log.debug("<< CustomTokenStore.removeAccessTokenUsingRefreshToken");

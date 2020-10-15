@@ -13,34 +13,43 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "oauth_client_details")
+@Table(name = "oauth_client_details", schema = "web")
 @EntityListeners(AuditingEntityListener.class) //加這行 CreatedBy 才會生效
 public class OauthClient {
     @Id
-    private String clientid;
+    @Column(name = "client_id")
+    private String clientId;
+    
     @Column(name = "client_secret")
     private String clientSecret;
+    
     @Column(name = "web_server_redirect_uri")
     private String webServerRedirectUri;
+    
     @Column(name = "access_token_validity")
     private Integer accessTokenValidity;
+    
     @Column(name = "refresh_token_validity")
     private Integer refreshTokenValidity;
+    
     @Column(name = "additional_information")
     private String additionalInformation;
 
     private String autoapprove;
 
     @CreatedDate
-    @Column(name = "createddate")
-    private Date createddate;
+    @Column(name = "created_date")
+    private Date createdDate;
+    
     @CreatedBy
-    @Column(name = "createdby")
-    private String createdby;
+    @Column(name = "created_by")
+    private String createdBy;
+    
     @LastModifiedDate
-    @Column(name = "lastmodifieddate")
-    private Date lastmodifieddate;
+    @Column(name = "last_modified_date")
+    private Date lastModifiedDate;
+    
     @LastModifiedBy
-    @Column(name = "lastmodifiedby")
-    private String lastmodifiedby;
+    @Column(name = "last_modified_by")
+    private String lastModifiedBy;
 }

@@ -6,12 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+
 import java.util.List;
 
 @Repository
 public interface OauthClientResourceRepository extends JpaRepository<OauthClientResource, String> {
 
     // 取出有有對應的 resourceid
-    @Query("select cr.resourceid from OauthClientResource cr where cr.clientid = :clientid")
-    List<String> findResourceidByClientid(@Param("clientid") String clientid);
+    @Query("select cr.resourceId from OauthClientResource cr where cr.clientId = :clientId")
+    List<String> findResourceIdByClientId(@Param("clientId") String clientId);
 }

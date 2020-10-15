@@ -4,9 +4,10 @@ import me.lab.in.action.auth_server.model.OauthClientGrantType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+
 import java.util.List;
 
 @Repository
 public interface OauthClientGrantTypeRepository extends JpaRepository<OauthClientGrantType, String> {
-    List<OauthClientGrantType> findByClientid(String clientid);
+    List<OauthClientGrantType> findByClientId(String clientid);
 }

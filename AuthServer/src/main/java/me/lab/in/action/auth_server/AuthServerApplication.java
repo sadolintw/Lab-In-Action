@@ -8,7 +8,7 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
-@SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
+@SpringBootApplication
 @PropertySources({
     @PropertySource(value = "file:/C:\\property\\lab\\application.properties",  ignoreResourceNotFound = true)
 })

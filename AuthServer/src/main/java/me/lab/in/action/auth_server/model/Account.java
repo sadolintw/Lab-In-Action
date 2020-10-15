@@ -14,13 +14,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-
+/**
+ * Created by samchu on 2017/2/14.
+ */
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class) //加這行 CreatedBy 才會生效
 public class Account {
     @Id
-    private String accountid;
+    @Column(name = "account_id")
+    private String accountId;
 
     @NotNull
     @Size(min = 8, max = 255, message = "Username have to be grater than 8 characters")
@@ -38,7 +41,8 @@ public class Account {
     private boolean enabled = true;
 
     @NotNull
-    private boolean credentialsexpired = false;
+    @Column(name = "credentials_expired")
+    private boolean credentialsExpired = false;
 
     @NotNull
     private boolean expired = false;
@@ -52,15 +56,18 @@ public class Account {
 //    private List<Role> roles;
 
     @CreatedDate
-    @Column(name = "createddate")
-    private Date createddate;
+    @Column(name = "created_date")
+    private Date createdDate;
+
     @CreatedBy
-    @Column(name = "createdby")
-    private String createdby;
+    @Column(name = "created_by")
+    private String createdBy;
+
     @LastModifiedDate
-    @Column(name = "lastmodifieddate")
-    private Date lastmodifieddate;
+    @Column(name = "last_modified_date")
+    private Date lastModifiedDate;
+
     @LastModifiedBy
-    @Column(name = "lastmodifiedby")
-    private String lastmodifiedby;
+    @Column(name = "last_modified_by")
+    private String lastModifiedBy;
 }

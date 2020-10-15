@@ -13,18 +13,55 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "oauth_client_resource", schema = "web")
+@Table(name = "oauth_token", schema = "web")
 @EntityListeners(AuditingEntityListener.class) //加這行 CreatedBy 才會生效
-public class OauthClientResource {
+public class OauthToken {
     @Id
+    @Column(name = "id")
     private String id;
+    
+    @Column(name = "token_id")
+    private String tokenId;
+    
+    @Column(name = "refresh_id")
+    private String refreshId;
     
     @Column(name = "client_id")
     private String clientId;
     
-    @Column(name = "resource_id")
-    private String resourceId;
-
+    @Column(name = "grant_type")
+    private String grantType;
+    
+    @Column(name = "resource_ids")
+    private String resourceIds;
+    
+    @Column(name = "scopes")
+    private String scopes;
+    
+    @Column(name = "username")
+    private String username;
+    
+    @Column(name = "redirect_uri")
+    private String redirectUri;
+    
+    @Lob
+    @Column(name = "access_token")
+    private String accessToken;
+    
+    @Lob
+    @Column(name = "refreshToken")
+    private String refreshToken;
+    
+    @Column(name = "refreshed")
+    private Boolean refreshed;
+    
+    @Column(name = "locked")
+    private Boolean locked;
+    
+    @Lob
+    @Column(name = "authentication")
+    private byte[] authentication;
+    
     @CreatedDate
     @Column(name = "created_date")
     private Date createdDate;

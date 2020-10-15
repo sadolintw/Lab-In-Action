@@ -44,15 +44,15 @@ public class CustomUserDetailsService implements UserDetailsService {
             //throw new UsernameNotFoundException("User " + username + " not found.");
         }
 
-        List<AccountRole> accountRoleList = accountRoleRepository.findByAccountid(account.getAccountid());
+        List<AccountRole> accountRoleList = accountRoleRepository.findByAccountId(account.getAccountId());
         if (accountRoleList == null || accountRoleList.size() < 1) {
             // No Roles assigned to user...
             throw new UsernameNotFoundException("User not authorized.");
         }
         // 取出角色清單
-        List<String> roleidList = accountRoleList.stream().map(AccountRole::getRoleid).collect(Collectors.toList());
+        List<String> roleidList = accountRoleList.stream().map(AccountRole::getRoleId).collect(Collectors.toList());
 
-        List<Role> roleList = roleRepository.findByRoleidIn(roleidList);
+        List<Role> roleList = roleRepository.findByRoleIdIn(roleidList);
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
         for (Role role : roleList) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getCode()));
@@ -62,7 +62,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 account.getPassword(),
                 account.isEnabled(), //是否可用
                 !account.isExpired(), //是否過期
-                !account.isCredentialsexpired(), //證書不過期為true
+                !account.isCredentialsExpired(), //證書不過期為true
                 !account.isLocked(), //帳號未鎖定為true
                 grantedAuthorities);
 

@@ -1,4 +1,4 @@
-package me.lab.in.action.web.query;
+package me.lab.in.action.graphql.query;
 
 import lombok.Getter;
 import lombok.Setter;

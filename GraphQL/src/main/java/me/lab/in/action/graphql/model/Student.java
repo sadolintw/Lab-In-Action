@@ -1,4 +1,4 @@
-package me.lab.in.action.web.model;
+package me.lab.in.action.graphql.model;
 
 import java.util.List;
 

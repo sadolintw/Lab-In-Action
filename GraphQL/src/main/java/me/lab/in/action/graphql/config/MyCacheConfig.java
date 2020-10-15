@@ -1,4 +1,4 @@
-package me.lab.in.action.web.config;
+package me.lab.in.action.graphql.config;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;

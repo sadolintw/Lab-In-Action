@@ -1,4 +1,4 @@
-package me.lab.in.action.web.query;
+package me.lab.in.action.graphql.query;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import org.jetbrains.annotations.NotNull;

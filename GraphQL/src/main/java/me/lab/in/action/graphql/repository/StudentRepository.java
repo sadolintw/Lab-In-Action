@@ -1,6 +1,6 @@
-package me.lab.in.action.web.repository;
+package me.lab.in.action.graphql.repository;
 
-import me.lab.in.action.web.model.Student;
+import me.lab.in.action.graphql.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

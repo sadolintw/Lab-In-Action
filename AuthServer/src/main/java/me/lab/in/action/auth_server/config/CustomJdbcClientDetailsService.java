@@ -9,14 +9,11 @@ import me.lab.in.action.auth_server.model.Scop;
 
 import me.lab.in.action.auth_server.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,7 +34,7 @@ public class CustomJdbcClientDetailsService implements ClientDetailsService, Cli
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
         log.debug(">> CustomJdbcClientDetailsService.loadClientByClientId clientId={}", clientId);
-        OauthClient oauthClient = oauthClientRepository.findOne(clientId).get();
+        OauthClient oauthClient = oauthClientRepository.findById(clientId).get();
         // 取出 Resource
         List<String> resourceidList = oauthClientResourceRepository.findResourceidByClientid(oauthClient.getClientid());
         // 雖然有對應，但避免對應錯還是去 Resource 表格取出來

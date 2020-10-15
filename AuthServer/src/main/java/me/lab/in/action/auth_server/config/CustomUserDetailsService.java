@@ -22,9 +22,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by samchu on 2017/2/15.
- */
 @Slf4j
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

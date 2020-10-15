@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class CustomUserDetailsAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
     @Autowired
     private CustomUserDetailsService userDetailsService;

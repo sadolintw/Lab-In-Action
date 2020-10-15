@@ -24,9 +24,6 @@ import org.springframework.util.Assert;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Created by samchu on 2017/3/22.
- */
 
 @Data
 @EqualsAndHashCode(callSuper = false)

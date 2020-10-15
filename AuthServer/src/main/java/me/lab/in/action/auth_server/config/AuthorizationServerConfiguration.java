@@ -13,9 +13,6 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
-/**
- * Created by samchu on 2017/2/15.
- */
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
@@ -27,18 +24,55 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private CustomJdbcClientDetailsService customJdbcClientDetailsService;
     @Autowired
     private CustomTokenServices tokenServices;
-
+    
+    @Autowired
+    private JwtAccessTokenConverter jwtAccessTokenConverter;
+    @Autowired
+    private TokenStore tokenStore;
+    
+//    @Override
+//    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+//        endpoints
+//                .authenticationManager(authenticationManager)
+//                .userDetailsService(userDetailsService)
+//                .tokenServices(tokenServices);
+//    }
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
-                .authenticationManager(authenticationManager)
+                .tokenStore(tokenStore)
                 .userDetailsService(userDetailsService)
-                .tokenServices(tokenServices);
+                .authenticationManager(authenticationManager)
+                .accessTokenConverter(jwtAccessTokenConverter);
     }
+
+//    @Override
+//    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+//        clients.withClientDetails(customJdbcClientDetailsService);
+//    }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.withClientDetails(customJdbcClientDetailsService);
+        clients
+                .inMemory()
+                .withClient("clientapp")
+                .authorizedGrantTypes("password", "refresh_token")
+                .scopes("account", "account.readonly", "role", "role.readonly")
+                .resourceIds("account")
+                .secret("123456").accessTokenValiditySeconds(3600).refreshTokenValiditySeconds(3600)
+                .and()
+                .withClient("clientkpi")
+                .authorizedGrantTypes("password", "refresh_token")
+                .scopes("account", "account.readonly", "role", "role.readonly")
+                .resourceIds("account", "kpi")
+                .secret("123456").accessTokenValiditySeconds(3600).refreshTokenValiditySeconds(3600)
+                .and()
+                .withClient("web")
+                .redirectUris("http://www.google.com.tw")
+                .secret("123456")
+                .authorizedGrantTypes("implicit")
+                .scopes("account", "account.readonly", "role", "role.readonly")
+                .resourceIds("friend", "common", "user")
+                .accessTokenValiditySeconds(3600);
     }
-
 }

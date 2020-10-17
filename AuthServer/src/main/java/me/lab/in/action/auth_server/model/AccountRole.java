@@ -1,5 +1,6 @@
 package me.lab.in.action.auth_server.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,12 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
-/**
- * Created by samchu on 2017/2/16.
- */
 @Data
 @Entity
-@Table(name = "account_role")
+@Table(name = "account_role", schema = "dbo")
 public class AccountRole {
     @Id
     private String id;
@@ -30,6 +28,7 @@ public class AccountRole {
 
     @CreatedDate
     @Column(name = "created_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
 
     @CreatedBy
@@ -38,6 +37,7 @@ public class AccountRole {
 
     @LastModifiedDate
     @Column(name = "last_modified_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastModifiedDate;
 
     @LastModifiedBy

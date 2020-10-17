@@ -1,5 +1,6 @@
 package me.lab.in.action.auth_server.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -7,19 +8,14 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-/**
- * Created by samchu on 2017/2/9.
- */
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class) //加這行 CreatedBy 才會生效
+@Table(name = "role", schema = "dbo")
 public class Role {
     @Id
     @Column(name = "role_id")
@@ -33,6 +29,7 @@ public class Role {
 
     @CreatedDate
     @Column(name = "created_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
 
     @CreatedBy
@@ -41,6 +38,7 @@ public class Role {
 
     @LastModifiedDate
     @Column(name = "last_modified_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastModifiedDate;
 
     @LastModifiedBy

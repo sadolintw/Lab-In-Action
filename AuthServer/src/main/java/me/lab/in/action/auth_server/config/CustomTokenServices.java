@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import me.lab.in.action.auth_server.service.ScopeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.common.*;
@@ -14,11 +13,9 @@ import org.springframework.security.oauth2.common.exceptions.InvalidGrantExcepti
 import org.springframework.security.oauth2.common.exceptions.InvalidScopeException;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.*;
-import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -36,6 +33,7 @@ public class CustomTokenServices extends DefaultTokenServices {
 
     private int accessTokenValiditySeconds = 60 * 60 * 12; // default 12 hours.
 
+    @Autowired
     private ClientDetailsService clientDetailsService;
 
     private AuthenticationManager authenticationManager;
@@ -43,13 +41,15 @@ public class CustomTokenServices extends DefaultTokenServices {
     @Autowired
     private TokenStore tokenStore;
 
+    @Autowired
     private TokenEnhancer accessTokenEnhancer;
 
     private boolean supportRefreshToken = false;
 
     private boolean reuseRefreshToken = true;
 
-    private ScopeService scopService;
+    @Autowired
+    private ScopeService scopeService;
 
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(tokenStore, "tokenStore must be set");
@@ -114,15 +114,15 @@ public class CustomTokenServices extends DefaultTokenServices {
         }
         token.setRefreshToken(refreshToken);
 
-        Boolean scopRangeByRole = false;
+        Boolean scopeRangeByRole = false;
         // 依照資料庫來判斷
         ClientDetails client = clientDetailsService.loadClientByClientId(authentication.getOAuth2Request().getClientId());
         if (client.getAdditionalInformation() != null) {
             Map<String, Object> additionalInformation = client.getAdditionalInformation();
-            if (additionalInformation.get("scopRangeBy") != null) {
-                String scopRangeBy = (String) additionalInformation.get("scopRangeBy");
-                if ("role".equalsIgnoreCase(scopRangeBy)) {
-                    scopRangeByRole = true;
+            if (additionalInformation.get("scopeRangeBy") != null) {
+                String scopeRangeBy = (String) additionalInformation.get("scopeRangeBy");
+                if ("role".equalsIgnoreCase(scopeRangeBy)) {
+                    scopeRangeByRole = true;
                 }
             }
         }
@@ -135,13 +135,13 @@ public class CustomTokenServices extends DefaultTokenServices {
 //                scopRangeByRole = true;
 //            }
 //        }
-        log.debug("CustomTokenServices.createAccessToken scopRangeByRole={}", scopRangeByRole);
-        if (scopRangeByRole == Boolean.TRUE) {
+        log.debug("CustomTokenServices.createAccessToken scopRangeByRole={}", scopeRangeByRole);
+        if (scopeRangeByRole == Boolean.TRUE) {
             // 這邊依照角色資料庫實際的權限來核發
-            List<String> resourceidList = authentication.getOAuth2Request().getResourceIds().stream().collect(Collectors.toList());
-            log.debug("CustomTokenServices.createAccessToken resourceidList={}", resourceidList);
+            List<String> resourceIdList = authentication.getOAuth2Request().getResourceIds().stream().collect(Collectors.toList());
+            log.debug("CustomTokenServices.createAccessToken resourceIdList={}", resourceIdList);
             List<String> rolecodeList = authentication.getUserAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-            Set<String> scopSet = scopService.generationByRole(resourceidList, rolecodeList);
+            Set<String> scopSet = scopeService.generationByRole(resourceIdList, rolecodeList);
             log.debug("CustomTokenServices.createAccessToken scopSet={}", scopSet);
             token.setScope(scopSet);
         } else {

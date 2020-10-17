@@ -1,5 +1,6 @@
 package me.lab.in.action.auth_server.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -14,12 +15,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by samchu on 2017/2/14.
- */
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class) //加這行 CreatedBy 才會生效
+@Table(name = "account", schema = "dbo")
 public class Account {
     @Id
     @Column(name = "account_id")
@@ -57,6 +56,7 @@ public class Account {
 
     @CreatedDate
     @Column(name = "created_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
 
     @CreatedBy
@@ -65,6 +65,7 @@ public class Account {
 
     @LastModifiedDate
     @Column(name = "last_modified_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastModifiedDate;
 
     @LastModifiedBy

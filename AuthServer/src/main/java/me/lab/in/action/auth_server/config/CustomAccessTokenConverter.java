@@ -14,11 +14,7 @@ import org.springframework.security.oauth2.provider.token.UserAuthenticationConv
 
 import java.util.*;
 
-/**
- * 將 token 轉成 JWT 跟原來程式一模一樣
- * https://github.com/spring-projects/spring-security-oauth/blob/master/spring-security-oauth2/src/main/java/org/springframework/security/oauth2/provider/token/DefaultAccessTokenConverter.java
- * Created by samchu on 2017/2/15.
- */
+
 @Slf4j
 public class CustomAccessTokenConverter implements AccessTokenConverter {
     private UserAuthenticationConverter userTokenConverter = new DefaultUserAuthenticationConverter();

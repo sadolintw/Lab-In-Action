@@ -10,9 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Created by samchu on 2017/2/9.
- */
 @Repository
 public interface AccountRepository extends JpaRepository<Account, String> {
 

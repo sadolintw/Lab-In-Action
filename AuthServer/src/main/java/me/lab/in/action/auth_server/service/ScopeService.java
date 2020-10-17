@@ -24,18 +24,18 @@ public class ScopeService {
     @Autowired
     private OauthScopeRepository scopeRepository;
 
-    public Set<String> generationByRole(List<String> resourceidList, List<String> rolecodeList) {
+    public Set<String> generationByRole(List<String> resourceIdList, List<String> roleCodeList) {
         // 先用角色代碼取出角色物件
-        List<Role> roleList = roleRepository.findByCodeIn(rolecodeList);
+        List<Role> roleList = roleRepository.findByCodeIn(roleCodeList);
         // 轉換成角色ID
-        List<String> roleidList = roleList.stream().map(Role::getRoleId).collect(Collectors.toList());
-        // 用角色ID 找出對應的 Scop 對應表
-        List<OauthRoleScope> roleScopList = roleScopeRepository.findByRidIn(roleidList);
-        // 取出 Scop ID
-        List<String> scopidList = roleScopList.stream().map(OauthRoleScope::getScopeId).collect(Collectors.toList());
-        // 去 Scop 表格找出可用 resourceid 跟 scopid
-        List<OauthScope> scopeList = scopeRepository.findByResourceIdInAndScopeIdIn(resourceidList, scopidList);
-        // 轉成 scopcode
+        List<String> roleIdList = roleList.stream().map(Role::getRoleId).collect(Collectors.toList());
+        // 用角色ID 找出對應的 Scope 對應表
+        List<OauthRoleScope> roleScopeList = roleScopeRepository.findByRidIn(roleIdList);
+        // 取出 Scope ID
+        List<String> scopidList = roleScopeList.stream().map(OauthRoleScope::getScopeId).collect(Collectors.toList());
+        // 去 Scope 表格找出可用 resourceId 跟 scopeId
+        List<OauthScope> scopeList = scopeRepository.findByResourceIdInAndScopeIdIn(resourceIdList, scopidList);
+        // 轉成 scopeCode
         Set<String> scopeSet = scopeList.stream().map(OauthScope::getScopeCode).collect(Collectors.toSet());
         return scopeSet;
     }

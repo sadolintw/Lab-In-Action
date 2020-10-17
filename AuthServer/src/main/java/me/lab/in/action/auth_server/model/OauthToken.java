@@ -1,5 +1,6 @@
 package me.lab.in.action.auth_server.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,7 +14,7 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "oauth_token", schema = "web")
+@Table(name = "oauth_token", schema = "dbo")
 @EntityListeners(AuditingEntityListener.class) //加這行 CreatedBy 才會生效
 public class OauthToken {
     @Id
@@ -64,6 +65,7 @@ public class OauthToken {
     
     @CreatedDate
     @Column(name = "created_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
     
     @CreatedBy
@@ -72,6 +74,7 @@ public class OauthToken {
     
     @LastModifiedDate
     @Column(name = "last_modified_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastModifiedDate;
     
     @LastModifiedBy

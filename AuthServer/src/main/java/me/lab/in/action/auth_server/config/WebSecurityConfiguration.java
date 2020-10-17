@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 @Slf4j
 @Configuration
 @EnableWebSecurity
+//@Order(1)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsAuthenticationProvider customUserDetailsAuthenticationProvider;
@@ -27,14 +29,34 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(customUserDetailsAuthenticationProvider);
     }
 
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeRequests()
+////                .antMatchers("/oauth/**")
+////                .permitAll()
+//                .anyRequest()
+//                .authenticated()
+//                .and()
+//                .formLogin().and()
+//                .httpBasic()
+//        ;
+//    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
+        http.csrf().disable();
+
+        http.authorizeRequests()
+                .antMatchers("/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().and()
-                .httpBasic();
+                .formLogin().permitAll();
+
+//        http.requestMatchers().antMatchers("/oauth/**")
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/oauth/**").authenticated();
     }
 
     @Bean
@@ -45,6 +67,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        BCryptPasswordEncoder b = new BCryptPasswordEncoder();
+        System.out.println(b.encode("123456"));
         return new BCryptPasswordEncoder();
     }
 

@@ -140,10 +140,10 @@ public class CustomTokenServices extends DefaultTokenServices {
             // 這邊依照角色資料庫實際的權限來核發
             List<String> resourceIdList = authentication.getOAuth2Request().getResourceIds().stream().collect(Collectors.toList());
             log.debug("CustomTokenServices.createAccessToken resourceIdList={}", resourceIdList);
-            List<String> rolecodeList = authentication.getUserAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-            Set<String> scopSet = scopeService.generationByRole(resourceIdList, rolecodeList);
-            log.debug("CustomTokenServices.createAccessToken scopSet={}", scopSet);
-            token.setScope(scopSet);
+            List<String> roleCodeList = authentication.getUserAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+            Set<String> scopeSet = scopeService.generationByRole(resourceIdList, roleCodeList);
+            log.debug("CustomTokenServices.createAccessToken scopSet={}", scopeSet);
+            token.setScope(scopeSet);
         } else {
             // 如果沒有特殊需求則依照申請範圍
             token.setScope(authentication.getOAuth2Request().getScope());

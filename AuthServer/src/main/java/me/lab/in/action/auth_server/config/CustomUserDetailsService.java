@@ -50,9 +50,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not authorized.");
         }
         // 取出角色清單
-        List<String> roleidList = accountRoleList.stream().map(AccountRole::getRoleId).collect(Collectors.toList());
+        List<String> roleIdList = accountRoleList.stream().map(AccountRole::getRoleId).collect(Collectors.toList());
 
-        List<Role> roleList = roleRepository.findByRoleIdIn(roleidList);
+        List<Role> roleList = roleRepository.findByRoleIdIn(roleIdList);
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
         for (Role role : roleList) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getCode()));

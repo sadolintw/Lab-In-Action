@@ -27,7 +27,7 @@ public class CustomJdbcClientDetailsService implements ClientDetailsService, Cli
     @Autowired
     private OauthResourceRepository resourceRepository;
     @Autowired
-    private OauthScopeRepository scopRepository;
+    private OauthScopeRepository scopeRepository;
     @Autowired
     private OauthClientGrantTypeRepository oauthClientGrantTypeRepository;
 
@@ -41,8 +41,8 @@ public class CustomJdbcClientDetailsService implements ClientDetailsService, Cli
         List<OauthResource> resourceList = resourceRepository.findByResourceIdIn(resourceidList);
         List<String> resourceids = resourceList.stream().map(OauthResource::getResourceId).collect(Collectors.toList());
         // 取出 Scope
-        List<OauthScope> scopList = scopRepository.findByResourceIdIn(resourceids);
-        List<String> scops = scopList.stream().map(OauthScope::getScopeCode).collect(Collectors.toList());
+        List<OauthScope> scopeList = scopeRepository.findByResourceIdIn(resourceids);
+        List<String> scopes = scopeList.stream().map(OauthScope::getScopeCode).collect(Collectors.toList());
         // 取出授權類型
         List<OauthClientGrantType> oauthClientGrantTypeList = oauthClientGrantTypeRepository.findByClientId(oauthClient.getClientId());
         List<String> grantTypes = oauthClientGrantTypeList.stream().map(OauthClientGrantType::getGrantType).collect(Collectors.toList());
@@ -50,7 +50,7 @@ public class CustomJdbcClientDetailsService implements ClientDetailsService, Cli
         details.setClientId(oauthClient.getClientId());
         details.setClientSecret(oauthClient.getClientSecret());
         details.setResourceIds(resourceids);
-        details.setScope(scops);
+        details.setScope(scopes);
         details.setAuthorizedGrantTypes(grantTypes);
         details.setAccessTokenValiditySeconds(oauthClient.getAccessTokenValidity());
         details.setRefreshTokenValiditySeconds(oauthClient.getRefreshTokenValidity());
@@ -58,7 +58,7 @@ public class CustomJdbcClientDetailsService implements ClientDetailsService, Cli
         // 這不用設定，在帳號驗證那邊會給值 CustomUserDetailsService.loadUserByUsername
         //details.setAuthorities(authorities);
         // 這邊會給這個 client 所有可申請的範圍，在Token轉換的時候把不適合該角色權限踢掉
-        details.setAutoApproveScopes(scops);
+        details.setAutoApproveScopes(scopes);
         if (StringUtils.hasText(oauthClient.getWebServerRedirectUri())) {
             details.setRegisteredRedirectUri(Arrays.stream(oauthClient.getWebServerRedirectUri().split(",")).collect(Collectors.toSet()));
         }

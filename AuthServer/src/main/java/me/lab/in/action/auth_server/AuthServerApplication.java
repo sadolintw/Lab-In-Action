@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @PropertySources({
     @PropertySource(value = "file:/C:\\property\\lab\\application.properties",  ignoreResourceNotFound = true)
 })
-@EnableAspectJAutoProxy(proxyTargetClass = true)
+//@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AuthServerApplication {
 
 	public static void main(String[] args) {

@@ -24,11 +24,12 @@ public class Oauth2Aspect {
      */
     @AfterReturning(pointcut = "execution( * org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint.*(..))", returning="retVal")
     public void executeAfterAuthentication(JoinPoint jp, Object retVal) throws Exception {
-        System.out.println(":Authentication done");
+//        System.out.println(":Authentication done");
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-        System.out.println(":Authentication done " + request.getRequestURI());
+//        System.out.println(":Authentication done " + request.getRequestURI());
         if(retVal instanceof ModelAndView){
+            System.out.println("reset url" + request.getRequestURI());
             ModelAndView modelAndView = (ModelAndView) retVal;
             modelAndView.setView(new RedirectView(((RedirectView)modelAndView.getView()).getUrl().replace("#", "?")));
         }

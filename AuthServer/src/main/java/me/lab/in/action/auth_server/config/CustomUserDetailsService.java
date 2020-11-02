@@ -28,8 +28,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private AccountRepository userRepository;
+
     @Autowired
     private AccountRoleRepository accountRoleRepository;
+
     @Autowired
     private RoleRepository roleRepository;
 

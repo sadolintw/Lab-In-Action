@@ -50,7 +50,7 @@ public class OauthToken {
     private String accessToken;
     
     @Lob
-    @Column(name = "refreshToken")
+    @Column(name = "refresh_token")
     private String refreshToken;
     
     @Column(name = "refreshed")

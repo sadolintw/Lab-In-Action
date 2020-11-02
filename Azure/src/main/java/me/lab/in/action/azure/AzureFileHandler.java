@@ -1,4 +1,4 @@
-package me.lab.in.action.graphql;
+package me.lab.in.action.azure;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,10 +9,10 @@ import org.springframework.context.annotation.PropertySources;
 @PropertySources({
 		@PropertySource(value = "file:C:\\lab\\application.properties")
 })
-public class GraphQLApplication {
+public class AzureFileHandler {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GraphQLApplication.class, args);
+		SpringApplication.run(AzureFileHandler.class, args);
 	}
 
 }

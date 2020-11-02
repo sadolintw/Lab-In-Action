@@ -6,7 +6,8 @@
 	<modules>
 		<module>GraphQL</module>
 		<module>AuthServer</module>
-	</modules>
+        <module>Azure</module>
+    </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>

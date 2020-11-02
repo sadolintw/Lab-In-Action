@@ -29,34 +29,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(customUserDetailsAuthenticationProvider);
     }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeRequests()
-////                .antMatchers("/oauth/**")
-////                .permitAll()
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .formLogin().and()
-//                .httpBasic()
-//        ;
-//    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin().permitAll();
-
-//        http.requestMatchers().antMatchers("/oauth/**")
+            .antMatchers("/login").permitAll()
+            .anyRequest().authenticated()
+                //basic login page
 //                .and()
-//                .authorizeRequests()
-//                .antMatchers("/oauth/**").authenticated();
+//                .formLogin().permitAll()
+            ;
     }
 
     @Bean

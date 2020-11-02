@@ -19,15 +19,19 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
+
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @Autowired
     private CustomJdbcClientDetailsService customJdbcClientDetailsService;
+
     @Autowired
     private CustomTokenServices tokenServices;
     
     @Autowired
     private JwtAccessTokenConverter jwtAccessTokenConverter;
+
     @Autowired
     private TokenStore tokenStore;
     

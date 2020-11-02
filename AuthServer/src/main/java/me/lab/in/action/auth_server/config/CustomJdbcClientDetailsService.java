@@ -39,9 +39,9 @@ public class CustomJdbcClientDetailsService implements ClientDetailsService, Cli
         List<String> resourceidList = oauthClientResourceRepository.findResourceIdByClientId(oauthClient.getClientId());
         // 雖然有對應，但避免對應錯還是去 Resource 表格取出來
         List<OauthResource> resourceList = resourceRepository.findByResourceIdIn(resourceidList);
-        List<String> resourceids = resourceList.stream().map(OauthResource::getResourceId).collect(Collectors.toList());
+        List<String> resourceIds = resourceList.stream().map(OauthResource::getResourceId).collect(Collectors.toList());
         // 取出 Scope
-        List<OauthScope> scopeList = scopeRepository.findByResourceIdIn(resourceids);
+        List<OauthScope> scopeList = scopeRepository.findByResourceIdIn(resourceIds);
         List<String> scopes = scopeList.stream().map(OauthScope::getScopeCode).collect(Collectors.toList());
         // 取出授權類型
         List<OauthClientGrantType> oauthClientGrantTypeList = oauthClientGrantTypeRepository.findByClientId(oauthClient.getClientId());
@@ -49,7 +49,7 @@ public class CustomJdbcClientDetailsService implements ClientDetailsService, Cli
         BaseClientDetails details = new BaseClientDetails();
         details.setClientId(oauthClient.getClientId());
         details.setClientSecret(oauthClient.getClientSecret());
-        details.setResourceIds(resourceids);
+        details.setResourceIds(resourceIds);
         details.setScope(scopes);
         details.setAuthorizedGrantTypes(grantTypes);
         details.setAccessTokenValiditySeconds(oauthClient.getAccessTokenValidity());

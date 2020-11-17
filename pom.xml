@@ -4,11 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>pom</packaging>
 	<modules>
-		<module>GraphQL</module>
-		<module>AuthServer</module>
-        <module>Azure</module>
-        <module>Utils</module>
-    </modules>
+
+        <module>Modules</module>
+		<module>chatroom-backend</module>
+	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
